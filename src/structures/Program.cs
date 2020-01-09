@@ -1,6 +1,5 @@
 using System;
 using System.Globalization;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace csharp1.structures
 {
