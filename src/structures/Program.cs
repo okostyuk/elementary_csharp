@@ -9,7 +9,7 @@ namespace csharp1.structures
         public static void task2()
         {
             Train[] trains = new Train[8];
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < trains.Length; i++)
             {
                 Console.WriteLine("Train " + i + ":");
                 Console.Write("Number: ");
@@ -22,18 +22,16 @@ namespace csharp1.structures
                     inputNumber = Console.ReadLine();
                 }
                 
-                Console.WriteLine();
                 Console.Write("Destination : ");
                 String inputDestination = Console.ReadLine();
                 
-                Console.WriteLine();
-                Console.Write("Departure time (mm.dd.yyyy): ");
+                Console.Write("Departure time (dd MM yyyy): ");
                 String inputDate = Console.ReadLine();
 
                 DateTime departureTimeResult;
                 while (!DateTime.TryParseExact(
                         inputDate, 
-                        "MM.dd.yyyy", 
+                        "dd MM yyyy", 
                         null, 
                         DateTimeStyles.None, 
                         out departureTimeResult))
@@ -51,7 +49,6 @@ namespace csharp1.structures
 
             while (true)
             {
-                Console.WriteLine();
                 Console.Write("Enter train number : ");
                 String input = Console.ReadLine();
                 if ("q".Equals(input))
