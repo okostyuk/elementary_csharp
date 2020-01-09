@@ -7,7 +7,8 @@ namespace csharp1
     {
         public static void Main(string[] args)
         {
-            structures.Program.task2();
+            //structures.Program.task2();
+            structures.Program.task3();
         }
     }
 }

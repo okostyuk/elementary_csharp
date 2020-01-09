@@ -77,5 +77,26 @@ namespace csharp1.structures
                 }
             }
         }
+
+        public static void task3()
+        {
+            MyStruct struct1 = new MyStruct();
+            struct1.change = "not changed";
+            Console.WriteLine(struct1.change + " " + struct1.GetHashCode());
+            StruktTaker(struct1);
+            struct1.change = "asd";
+            Console.WriteLine(struct1.change);
+
+            MyStruct struct2 = struct1;
+            Console.WriteLine(struct2.change + " " + struct2.GetHashCode());
+            Console.WriteLine(struct2.Equals(struct1));
+            Console.WriteLine(Object.ReferenceEquals(struct1, struct2));
+        }
+
+        static void StruktTaker(MyStruct sStruct)
+        {
+            sStruct.change = "changed";
+            Console.WriteLine("StruktTaker: " + sStruct.change + " " + sStruct.GetHashCode());
+        }
     }
 }
