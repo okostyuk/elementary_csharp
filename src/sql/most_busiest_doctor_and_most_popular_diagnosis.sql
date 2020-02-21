@@ -1,3 +1,4 @@
+// статистику по отделениям: вывести для каждого отделения врача, который больше всего работал и самый частый диагноз (по всем врачам) за последние три месяца
 select distinct
     B.NAME,
     (
@@ -7,7 +8,7 @@ select distinct
         where V2.BRANCH_ID=BRANCH_TO_DOCTOR.BRANCH_ID
         group by LNAME LIMIT 1
         ) as MOST_LOADED_DOCTOR,
-    BRANCH_TO_DIAG.DIAGNOSIS_ID
+    BRANCH_TO_DIAG.DIAGNOSIS_ID as MOST_COMMON_DIAGNOSIS
 from VISITS BRANCH_TO_DOCTOR
 left join
      (
