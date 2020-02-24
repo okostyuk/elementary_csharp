@@ -1,5 +1,7 @@
-//диагнозы, которые были поставлены за последний месяц в порядке убывания их частоты за все время
-select D.TEXT, FREQ
+-- диагнозы, которые были поставлены за последний месяц 
+-- в порядке убывания их частоты за все время
+
+select D.TEXT LAST_MONTH_DIAGNOSES, FREQ
 from DIAGNOSIS as D
 right join (
          select distinct DIAGNOSIS_ID from VISITS
