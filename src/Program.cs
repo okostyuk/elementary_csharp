@@ -1,5 +1,6 @@
 ﻿using System;
 using csharp1.classes;
+using csharp1.network;
 
 namespace csharp1
 {
@@ -11,7 +12,9 @@ namespace csharp1
             //structures.Program.task3();
             
             //delegates.DelegatesTask.Task2();
-            delegates.DelegatesTask.Task3();
+            //delegates.DelegatesTask.Task3();
+            //SimpleClient client = new SimpleClient();
+            new SimpleServer();
         }
     }
 }
