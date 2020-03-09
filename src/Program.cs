@@ -6,7 +6,11 @@ namespace csharp1
     {
         public static void Main(string[] args)
         {
-            new WebServer(9090).Start();
+            SimplePageLoader.Download(
+                //"http://selin.in.ua/solvve/text.txt",
+                "http://info.cern.ch/hypertext/WWW/TheProject.html",
+                //"http://ua.fm/",
+                "/home/oleg/test2.html");
         }
     }
 }
