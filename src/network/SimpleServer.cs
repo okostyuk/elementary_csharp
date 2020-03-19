@@ -65,11 +65,6 @@ namespace csharp1.network
                     Memory<byte> memory = new Memory<byte>();
                     clients.Add(client, memory);
                     asyncTasks.Add(ReadStreamAsync(stream));
-
-                    /*Console.WriteLine("Read " + read + " bytes");
-                    Console.WriteLine(Encoding.ASCII.GetString(buffer, 0, read));
-                    stream.Write(Encoding.ASCII.GetBytes("Hello from server"));
-                    stream.Close();*/
                 }
                 server.Stop();            }
             

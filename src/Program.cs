@@ -1,4 +1,6 @@
-﻿using csharp1.network;
+﻿using System;
+using System.Threading;
+using csharp1.chat;
 
 namespace csharp1
 {
@@ -6,11 +8,23 @@ namespace csharp1
     {
         public static void Main(string[] args)
         {
-            SimplePageLoader.Download(
-                //"http://selin.in.ua/solvve/text.txt",
-                "http://info.cern.ch/hypertext/WWW/TheProject.html",
-                //"http://ua.fm/",
-                "/home/oleg/test2.html");
+            if (args.Length == 0)
+            {
+                new ChatServer().Start();
+            }
+            else
+            {
+                switch (args[0])
+                {
+                    case "server":
+                        new ChatServer().Start();
+                        break;
+                    case "client":
+                        new Client().Connect();
+                        break;
+                }
+            }
         }
+
     }
 }
