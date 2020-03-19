@@ -41,7 +41,10 @@ namespace csharp1.chat
                         client.Status = "DISCONNECTED";
                         client.DisconnectSilently();
                         disconnected.Add(client);
+                        if (client.Name == null) continue;
+                        usernames.Remove(client.Name);
                         messages.Add(new Message("disconnected") {Username = client.Name});
+
                     }
                 }
 
@@ -58,26 +61,30 @@ namespace csharp1.chat
         private void ProcessClient(ChatClient client)
         {
             if (!client.Connected()) throw new IOException("Client disconnected");
-            if ("NEW".Equals(client.Status))
+            switch (client.Status)
             {
-                var message = client.ReceiveMessageIfAvailable();
-                if (message == null) return;
-                if (usernames.Contains(message.Username))
+                case "NEW":
                 {
-                    client.SendMessage(new Message("Error: Username " + message.Username + " already in use."){Username = "Admin"});
-                    throw new IOException("Wrong username");
-                }
+                    var message = client.ReceiveMessageIfAvailable();
+                    if (message == null || string.IsNullOrWhiteSpace(message.Username)) return;
+                    client.Name = message.Username;
+                    if (usernames.Contains(message.Username))
+                    {
+                        client.SendMessage(new Message("Error: Username " + message.Username + " already in use."){Username = "Admin"});
+                        throw new IOException("Wrong username");
+                    }
 
-                client.Name = message.Username;
-                usernames.Add(message.Username);
-                client.SendMessage(new Message("Greeting "+ client.Name+"!"){Username = "Admin"});
-                client.Status = "USERNAME_SELECTED";
-                message.Text = "Enter to chat";
-                messages.Add(message);
-            } else if ("USERNAME_SELECTED".Equals(client.Status))
-            {
-                SendMessages(client);
-                ReceiveMessages(client);
+                    usernames.Add(message.Username);
+                    client.SendMessage(new Message("Greeting "+ client.Name+"!"){Username = "Admin"});
+                    client.Status = "USERNAME_SELECTED";
+                    message.Text = "Enter to chat";
+                    messages.Add(message);
+                    break;
+                }
+                case "USERNAME_SELECTED":
+                    SendMessages(client);
+                    ReceiveMessages(client);
+                    break;
             }
         }
 
@@ -90,7 +97,6 @@ namespace csharp1.chat
 
             if (".quit".Equals(message.Text.ToLower()))
             {
-                usernames.Remove(client.Name);
                 throw new IOException("Disconnected");
             }
 
@@ -99,17 +105,7 @@ namespace csharp1.chat
 
         private void SendMessages(ChatClient client)
         {
-            foreach (var message in messages.Where(msg =>
-            {
-                try
-                {
-                    return !msg.Username.Equals(client.Name);
-                }
-                catch
-                {
-                    return false;
-                }
-            }))
+            foreach (var message in messages.Where(msg =>!msg.Username.Equals(client.Name)))
             {
                 client.SendMessage(message);
                 client.Date = message.Date;
