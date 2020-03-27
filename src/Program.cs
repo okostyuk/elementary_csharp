@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using csharp1.chat;
+﻿using csharp1.async;
 
 namespace csharp1
 {
@@ -8,22 +6,8 @@ namespace csharp1
     {
         public static void Main(string[] args)
         {
-            if (args.Length == 0)
-            {
-                new ChatServer().Start();
-            }
-            else
-            {
-                switch (args[0])
-                {
-                    case "server":
-                        new ChatServer().Start();
-                        break;
-                    case "client":
-                        new Client().Connect();
-                        break;
-                }
-            }
+            new AsyncTest().Test(25, 1);
+            new AsyncTest().Test(25, 6);
         }
 
     }
