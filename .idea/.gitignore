@@ -3,3 +3,5 @@
 /.idea.elementary_csharp.dir/.idea/workspace.xml
 /.idea.elementary_csharp.dir/.idea/
 /.idea.elementary_csharp.dir/riderModule.iml
+# Datasource local storage ignored files
+/.idea.csharp1.dir/.idea/dataSources/

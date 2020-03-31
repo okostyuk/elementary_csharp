@@ -4,47 +4,63 @@ using System.Threading.Tasks;
 
 namespace csharp1.async
 {
-    public class AsyncTest
+    public static class AsyncTest
     {
-        public void Test(int complexity, int threads)
+        public static double CalcSum(int[] data)
         {
-            var arraySize = (int) Math.Pow(2, complexity);
-            var array = Prepare(arraySize);
+            var start = DateTime.Now;
+            long result = 0;
+            foreach (var i in data)
+            {
+                result += i;
+            }
+            var executionTime = (DateTime.Now - start).TotalMilliseconds;
+            //Console.WriteLine("CalcSum Result: {0} TotalTime: {1} ms", result, executionTime);
+            return executionTime;
+        }
 
-            var partSize = arraySize / threads;
-            var tasks = new Task[threads];
+        public static double CalcSumInParallel(int[] data, int threads)
+        {
+            var partSize = data.Length / threads;
+            var tasks = new Task<long>[threads];
             var start = DateTime.Now;
             for (var i = 0; i < threads; i++)
             {
-                var task = Calc(array, i*partSize, partSize);
-                tasks[i] = task;
+                tasks[i] = CalcAsync(data, i*partSize, partSize);
             }
 
             Task.WaitAll(tasks);
-            var end = DateTime.Now;
-            Console.WriteLine("Total: " + (end - start).TotalMilliseconds + " ms");
+            long result = 0;
+            foreach (var task in tasks)
+            {
+                result += task.Result;
+            }
+
+            var executionTime = (DateTime.Now - start).TotalMilliseconds;
+            //Console.WriteLine("CalcSumInParallel({2}) Result: {0} TotalTime: {1} ms", result, executionTime, threads);
+            return executionTime;
         }
 
-        private static int[] Prepare(int arraySize)
+        public static int[] PrepareData(int arraySize)
         {
             var random = new Random();
             var array = new int[arraySize];
             for (var i = 0; i < arraySize; i++)
             {
-                array[i] = random.Next(0, 10);
+                array[i] = random.Next(1, 10);
             }
 
             return array;
         }
 
-        private static async Task Calc(int[] values, int from, int length)
+        private static async Task<long> CalcAsync(int[] values, int @from, int length)
         {
             var taskId = from / length;
             var start = DateTime.Now;
-            var sum = 0;
+            var sum = 0L;
             var task = new Task(() =>
             {
-                Console.WriteLine("start taskId=" + taskId + "\t threadId=" + Thread.CurrentThread.GetHashCode());
+                //Console.WriteLine("\tstart taskId=" + taskId + "\t threadId=" + Thread.CurrentThread.GetHashCode());
                 for (int i = from; i < from+length; i++)
                 {
                     sum += values[i];
@@ -53,7 +69,8 @@ namespace csharp1.async
             task.Start();
             await task;
             var end = DateTime.Now;
-            Console.WriteLine("end taskId=" + taskId + "\t threadId=" + Thread.CurrentThread.GetHashCode() + " time: " + (end-start).TotalMilliseconds + " ms");
+            //Console.WriteLine("\tend taskId=" + taskId + "\t threadId=" + Thread.CurrentThread.GetHashCode() + " time: " + (end-start).TotalMilliseconds + " ms");
+            return sum;
         }
     }
 }
